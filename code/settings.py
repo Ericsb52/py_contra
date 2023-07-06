@@ -2,6 +2,7 @@ import pygame as pg
 import sys
 from pytmx.util_pygame import load_pygame
 from pygame.math import Vector2
+from os import walk
 
 
 # game settings
@@ -32,6 +33,7 @@ level_path = "data/map.tmx"
 
 # player settings
 player_speed = 400
+player_art = "graphics/player"
 
 
 

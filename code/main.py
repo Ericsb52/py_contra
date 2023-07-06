@@ -14,8 +14,8 @@ class AllSprites(pg.sprite.Group):
         self.offset.x = player.rect.centerx - WIDTH / 2
         self.offset.y = player.rect.centery - HEIGHT / 2
 
-        for sprite in sorted(self.sprites(), key = lambda sprite: sprite.z):
-            offest_rect = sprite.image.get_rect(center = sprite.rect.center)
+        for sprite in sorted(self.sprites(), key=lambda sprite: sprite.z):
+            offest_rect = sprite.image.get_rect(center=sprite.rect.center)
             offest_rect.center -= self.offset
             self.display_surf.blit(sprite.image, offest_rect)
 
@@ -28,6 +28,8 @@ class Main:
         self.clock = pg.time.Clock()
         # groups
         self.all_sprites = AllSprites()
+        self.collision_sprites = pg.sprite.Group()
+
         self.setup()
 
     def run(self):
@@ -54,18 +56,18 @@ class Main:
         tmx_map = load_pygame(level_path)
         # tiles
         for x, y, surf in tmx_map.get_layer_by_name("Level").tiles():
-            Tile((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites,LAYERS["main"])
+            CollisionTile((x * TILE_SIZE, y * TILE_SIZE), surf, [self.all_sprites, self.collision_sprites])
         i = 0
-        layer_index = ["bg","bg detail","fg detail bottom","fg detail top"]
-        for layer in ["BG","BG Detail","FG Detail Bottom","FG Detail Top"]:
+        layer_index = ["bg", "bg detail", "fg detail bottom", "fg detail top"]
+        for layer in ["BG", "BG Detail", "FG Detail Bottom", "FG Detail Top"]:
             for x, y, surf in tmx_map.get_layer_by_name(layer).tiles():
-                Tile((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites,LAYERS[layer_index[i]])
-            i+=1
+                Tile((x * TILE_SIZE, y * TILE_SIZE), surf, self.all_sprites, LAYERS[layer_index[i]])
+            i += 1
 
         # objects
         for obj in tmx_map.get_layer_by_name("Entities"):
             if obj.name == "Player":
-                self.player = Player((obj.x, obj.y), self.all_sprites,LAYERS["main"])
+                self.player = Player((obj.x, obj.y), self.all_sprites, LAYERS["main"],self.collision_sprites)
 
 
 if __name__ == "__main__":
