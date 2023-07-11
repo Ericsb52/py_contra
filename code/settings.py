@@ -26,14 +26,26 @@ LAYERS = {"bg":0,
           "hud":5
           }
 
-# Paths
+
 # map path
-level_path = "data/map.tmx"
+level_path = "../data/map.tmx"
 
 
 # player settings
 player_speed = 400
-player_art = "graphics/player"
+player_jump_force = 1400
+GRAVITY = 15
+player_art = "../graphics/player"
+shoot_coolDown = 200
+
+# platform settings
+plat_speed = 200
+
+# bullet settings
+bullet_speed = 1200
+bullet_path = "../graphics/bullet.png"
+bullet_life_time = 500
+
 
 
 
