@@ -2,6 +2,8 @@ import pygame
 from settings import *
 from tile import *
 from player import *
+from enemy import *
+from hud import *
 
 
 class AllSprites(pg.sprite.Group):
@@ -38,6 +40,11 @@ class AllSprites(pg.sprite.Group):
 class Main:
     def __init__(self):
         pygame.init()
+        pg.mixer.init()
+        self.music = pg.mixer.Sound("../audio/music.wav")
+        self.music.set_volume(0.5)
+        self.music.play(loops=-1)
+
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         pg.display.set_caption(TITLE)
         self.clock = pg.time.Clock()
@@ -46,10 +53,12 @@ class Main:
         self.collision_sprites = pg.sprite.Group()
         self.platforms_sprites = pg.sprite.Group()
         self.bullet_sprites = pg.sprite.Group()
+        self.enemy_bullets = pg.sprite.Group()
 
 
 
         self.setup()
+        self.overlay = Overlay(self)
 
     def run(self):
         while True:
@@ -68,7 +77,9 @@ class Main:
             self.screen.fill(sun_set)
             self.all_sprites.custom_draw(self.player)
 
+            self.overlay.display()
             pg.display.update()
+
 
     def setup(self):
 
@@ -88,11 +99,13 @@ class Main:
             i += 1
 
         # objects
-
         # player
         for obj in tmx_map.get_layer_by_name("Entities"):
             if obj.name == "Player":
-                self.player = Player(self,(obj.x, obj.y), self.all_sprites, LAYERS["main"],self.collision_sprites)
+                self.player = Player(self,(obj.x, obj.y), self.all_sprites, LAYERS["main"],player_art)
+            # enemy
+            if obj.name == "Enemy":
+                Enemy(self,(obj.x, obj.y),[self.all_sprites],LAYERS["main"],enemy_path)
 
         # platforms
         self.platform_border_rects = []

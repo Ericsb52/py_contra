@@ -3,7 +3,7 @@ import sys
 from pytmx.util_pygame import load_pygame
 from pygame.math import Vector2
 from os import walk
-
+from math import *
 
 # game settings
 TITLE = "PY Contra"
@@ -45,6 +45,9 @@ plat_speed = 200
 bullet_speed = 1200
 bullet_path = "../graphics/bullet.png"
 bullet_life_time = 500
+
+enemy_path = "../graphics/enemies/standard"
+enemy_shoot_coolDown = 600
 
 
 
